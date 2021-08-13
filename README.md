@@ -26,8 +26,6 @@ is a system designed to monitor and analyze the behavior of animals in a
 monitored environment, complete with video acquisition, editing and annotation
 utilities.
 
-#(*NOTE: this version is for monitoring mice and features synchronous recording and as of yet does not feature the asynchronous recording)
-
 
 # HARDWARE NEEDED  
 - 4 Raspberry Pi 3B (RPi)  (You can also utilize RPi 4B however different instructions may apply for display and microSD card requirments)
