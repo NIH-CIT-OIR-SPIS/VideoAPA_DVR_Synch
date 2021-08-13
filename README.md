@@ -1,4 +1,4 @@
-# SCORHE Video Acquisition For Synchronous Playback and Annotation v1.0.1 for Windows 10 and Linux
+# SCORHE Video Acquisition For Synchronous Playback and Annotation for Windows 10 and Linux
 
 ### This version is for people who wish to take simultaneous video from all four cameras.
 
