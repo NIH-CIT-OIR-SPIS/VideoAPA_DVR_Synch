@@ -167,7 +167,7 @@ A microSD card that is >8GB in size.
 Go to the releases page and download the latest image (currently 1.0.1) 
 
 Or click on this link to download the image directly: 
-[Raspberry Pi 3B/4 Image](https://github.com/NIH-CIT-OIR-SPIS/VideoAPA_DVR_Synch/releases/download/v1.0.1/rpi4.img.gz)
+[Raspberry Pi 3B/4 Image](https://github.com/NIH-CIT-OIR-SPIS/VideoAPA_DVR_Synch/releases/download/v1.0.2/rpi4.img.gz)
 
 You can use [7zip](https://www.7-zip.org/) to unzip the file (if on windows) or just extract it on Ubuntu by left clicking on the file and hitting 'Extract here'.
 
