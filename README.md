@@ -28,24 +28,26 @@ monitored environment, complete with video acquisition, editing and annotation
 utilities.
 
 
-# HARDWARE NEEDED  
-- Raspberry Pi 3B (RPi)
-- Raspberry Pi Cameras
+# HARDWARE NEEDED
+N = number of Raspberry Pis
+
+- \<20 Raspberry Pi 3Bs (RPi)
+- N Raspberry Pi Cameras
 (Can be from only the follwoing type:
 RPi Camera V2 or V2 NoIR, or Raspberry Pi High Quality Camera)
 - Computer with Ethernet capabilities
-- 1 [Linksys LRT224](https://www.linksys.com/lrt214-business-gigabit-vpn-router/LRT214.html) router and more Ethernet switches if need be (one ethernet for each RPi, and extra ports for Host PC, and 2 as intermediaries between the two routers) 
+- 1 [Linksys LRT224](https://www.linksys.com/lrt214-business-gigabit-vpn-router/LRT214.html) router and more Ethernet switches if need be (one ethernet for each RPi, and extra ports for Host PC, and extra ethernet cables as intermediaries between the two routers) 
 
 - Micro USB power cables (A-Male to Micro-B), with a current supply of at least 2 A (Amps) (possibly more for hooking up cameras) or at least 3.5 Amps if using RPi 4B
 
-- \>1 Ethernet cable for each RPi and one more for the Host PC
+- N Ethernet cables for each RPi and one more for the Host PC, and extra cables for external switches.
 - USB keyboard and mouse (to connect to a RPi, via USB ports)
 - HDMI Cable (to connect RPi to display)
 - Display with HDMI capabilities (Or remote in to Raspberry pi's via SSH)
-- 4 microSD cards that are at least 8GB in size however I recommend 32GB as it is not signifficantly more expensive (about a $1 to $2 difference as of 2020) 
+- N microSD cards that are at least 8GB in size however I recommend 32GB as it is not signifficantly more expensive (about a $1 to $2 difference as of 2020) 
 and will work better with later versions of RPi's (such as RPi 4B)
 - A microSD card to USB adapter (if your PC does not have a microSD card port)
-- FLASH DRIVE ( >32GB can cause problems if not formatted in FAT32 but as long as it is formatted with FAT32 and not exFAT or other format you should be fine)
+- FLASH DRIVE ( >=32GB can cause problems if not formatted in FAT32 but as long as it is formatted with FAT32 and not exFAT or other format you should be fine)
 - A seperate keyboard and mouse with USB plugs and connect to RPi (or SSH/VNC into RPi)
 
 # SETTING UP SOFTWARE needed on PC with Ubuntu 18.04/20.04
