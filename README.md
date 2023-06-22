@@ -169,7 +169,7 @@ Or click on this link to download the image directly:
 
 You can use [7zip](https://www.7-zip.org/) to unzip the file (if on windows) or just extract it on Ubuntu by left clicking on the file and hitting 'Extract here'.
 
-Please use [belenaEtcher](https://www.balena.io/etcher/) to write the image to the microSD card.
+Please use [balenaEtcher](https://www.balena.io/etcher/) to write the image to the microSD card.
 
 
 
