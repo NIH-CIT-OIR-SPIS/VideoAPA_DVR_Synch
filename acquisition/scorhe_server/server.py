@@ -697,8 +697,12 @@ class CameraServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     def __init__(self, port, controller, serverOptions):
         #print("Port line 674: {}".format(port))
         # Start TCP server on predetermined port
+        if platform.system() == "Linux":
+            socketserver.TCPServer.allow_reuse_address = True
+        
         socketserver.TCPServer.__init__(self, ('', port),
                                         ClientRequestHandler)
+        
         logger.debug('Port: {}'.format(port))
         self.daemon_threads = True
         # Reference to clients
@@ -802,9 +806,12 @@ class CameraServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
         #    self.sendStopPreviewingMessages()
         #except Exception as e:
         #    print(e)
-
-        for cam in camListStart:
-            self.sendToSelect('Camera', 'start recording', cam, time.strftime('%Y-%m-%d %Hh%Mm%Ss'))
+        try:
+            self.sendToAll('Camera', 'start recording', time.strftime('%Y-%m-%d %Hh%Mm%Ss'))
+        except Exception as e:
+            print("Possible issue with sendAll")
+            for cam in camListStart:
+                self.sendToSelect('Camera', 'start recording', cam, time.strftime('%Y-%m-%d %Hh%Mm%Ss'))
 
     def sendSplitRecordingMessages(self) -> None:
         """Tells cameras to continue to record, but into a new file."""
@@ -813,8 +820,13 @@ class CameraServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
                     'Cannot split recording when not recording')
         camListSplit = self.updateCageMap()
         logger.info('Split recording')
-        for cam in camListSplit:
-            self.sendToSelect('Camera', 'start recording', cam, time.strftime('%Y-%m-%d %Hh%Mm%Ss'))
+        try:
+            self.sendToAll('Camera', 'start recording', time.strftime('%Y-%m-%d %Hh%Mm%Ss'))
+        except Exception as e:
+            print("Possible issue with sendAll")
+            for cam in camListSplit:
+                self.sendToSelect('Camera', 'start recording', cam, time.strftime('%Y-%m-%d %Hh%Mm%Ss'))
+
 
     def sendStopRecordingMessages(self) -> None:
         """Tells cameras to stop recording."""
@@ -825,10 +837,15 @@ class CameraServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
         camListStop = self.updateCageMap()
         #self.setCamsRecording # NC edit
         logger.info('Stop recording')
+        try:
+            self.sendToAll('Camera', 'stop recording')
+        except Exception as e:
+            print("Possible issue with sendAll stop all")
+            for cam in camListStop:
+                self.sendToSelect('Camera', 'stop recording', cam)
 
 
-        for cam in camListStop:
-            self.sendToSelect('Camera', 'stop recording', cam)
+
         #try:
         #    self.sendStartPreviewingMessages()
         #except Exception as e:
@@ -1106,8 +1123,8 @@ class CameraServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
 
     def sendStopPreviewingMessages(self) -> None:
         """Tells cameras to stop previewing."""
-        if not self.previewing:
-            raise RecordingOrStreamException('Cannot stop previewing when not previewing')
+        # if not self.previewing:
+        #     raise RecordingOrStreamException('Cannot stop previewing when not previewing')
         self.previewing = False
         logger.info('Stop Previewing')
         self.sendToAll('Camera', 'stop previewing')
@@ -1271,16 +1288,17 @@ class CameraServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
         import glob
         logger.info('Finished {}: {} frames'.format(
                 utils.truncateFilename(filename), numFrames))
+        if platform.system() == 'Windows':
 
-        path_mod = os.getenv("USERPROFILE") + r"\AppData\Local\Temp\gpac_*"
-        for f in glob.glob(path_mod):
-            print("removing file {}".format(f))
-            try:
-                print("file time since modified {}".format(os.path.getmtime(f)))
-                print("time {}".format(time.time()))
-                os.remove(f)
-            except Exception as err:
-                print("Still using file {}. Error: {}".format(f, err))
+            path_mod = os.getenv("USERPROFILE") + r"\AppData\Local\Temp\gpac_*"
+            for f in glob.glob(path_mod):
+                print("removing file {}".format(f))
+                try:
+                    print("file time since modified {}".format(os.path.getmtime(f)))
+                    print("time {}".format(time.time()))
+                    os.remove(f)
+                except Exception as err:
+                    print("Still using file {}. Error: {}".format(f, err))
 
 
     def storeData(self, client: 'CameraClient', datatype: str, data: float) -> None:
@@ -1319,7 +1337,9 @@ class CameraServerController(threading.Thread):
     def __init__(self, serverOptions):
         threading.Thread.__init__(self)
         # Reference to the server thread
+        
         self.server = CameraServer(24461, self, serverOptions)  # type: CameraServer
+        
         # Scheduler for splitting recordings (default is 120 seconds)
         self.splitScheduler = None
         # Variable to sync recordings
@@ -1338,6 +1358,7 @@ class CameraServerController(threading.Thread):
     def startRecording(self) -> None:
         """Invoke this to have the cameras start recording."""
         #self.server.ca
+        self.stopPreviewing()
         try:
             self.recordStartTime = time.time() + 1
             self.asyncQueue.call(self.server.sendStartRecordingMessages)
@@ -2179,10 +2200,9 @@ def get_ip_address(ifname: str='wlan0') -> Union[Dict[str, str], List[str]]:
         with subprocess.Popen(['ifconfig', '-a'], stdout = subprocess.PIPE) as sp:
             for line in sp.stdout.read().decode().splitlines():
                 line = line.lstrip().rstrip()
-                print(line)
-                if line.startswith('eth0') and line.find('RUNNING'):
-                    count = 2
-                elif line.startswith('inet') and count == 2:
+                #print(line)
+                if line.startswith('inet'):
+                    logger.info("Setting to correct inet")
                     data['ipv4'].append(line.rsplit()[1])
                     data['mask'].append(line.rsplit()[3])
                     count = 1
@@ -2199,12 +2219,13 @@ def get_ip_address(ifname: str='wlan0') -> Union[Dict[str, str], List[str]]:
                     data['csds'].append(all_line.rsplit()[1])
                 fp.close()
         if 'ipv4' not in data or 'mask' not in data:
-            # probably not good
-            pass
+            raise OSError("IPV4 or mask not found ")
 
+        for ip_add_in in data['ipv4']:
+            print(ip_add_in)
         return data
     else:
-        raise OSError('SCORHE Acquisition does not support your system: {}'.format(platform.system()))
+        raise OSError('SCORHE Acquisition does not support your operating system: {}'.format(platform.system()))
 
 class AdvertThread(threading.Thread):
     """Advertises this server's IP address on the network
@@ -2227,21 +2248,35 @@ class AdvertThread(threading.Thread):
         # or any time the computer is connected to anything that isn't a linksys
         # router. in theory.
         csds_re = re.compile('router[0-9a-f]{6}\.com')
+        #print(ipData)
         if 'csds' not in ipData:
-            logger.info('Not broadcasting.')
+            logger.error('Error: Not broadcasting.')
             return
         for i in range(0, len(ipData['csds'])):
             if csds_re.match(ipData['csds'][i]):
                 break
         else:
-            logger.info('Not broadcasting.')
+            logger.error('Not broadcasting.')
             return
         ip = ipData['ipv4'][i]
         mask = ipData['mask'][i]
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM,
+
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM,
                           socket.IPPROTO_UDP)
+        except Exception as er_sock:
+            logger.error("Soft Error: {}".format(er_sock))
+            logger.info("Reuse address")
+
         s.bind(('', 0))
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        try:
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        except Exception as e:
+            logger.error("Soft Error: {}".format(e))
+            logger.info("Resetting Address resending")
+            time.sleep(30)
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+
         broadcast = getBroadcastAddress(ip, mask)
         while True:
             s.sendto(ip.encode(), (broadcast, self.port))
@@ -2281,9 +2316,12 @@ def masterRunServer(argv: List[str]) -> Tuple[CameraServerController, ServerThre
     # Get args if running from command line
     serverOptions = parseArgv(argv)  # type: ServerOptions
     # Start Broadcasting out to whole network
+    
     broadcastThread = AdvertThread()
+    
     # Start the Server controller
     controllerThread = CameraServerController(serverOptions)
+    
     # Start the actual server
     serverThread = ServerThread(controllerThread.server)
     # If the server is being launched via command line how to handle keyboard  

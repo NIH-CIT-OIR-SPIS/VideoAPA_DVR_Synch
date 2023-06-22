@@ -28,7 +28,7 @@ utilities.
 
 
 
-# SETTING UP SOFTWARE needed on PC with Ubuntu 18.04 Linux (Computer with Ethernet Capabilites)
+# SETTING UP SOFTWARE needed on PC with Ubuntu 18.04 Linux (Computer with Ethernet Capabilites) and Ubuntu 20.04
 (**Note whenever the terminal prompts you with:
 	[sudo] password for <YOUR USERNAME>:
 Type in your password to the computer, the password will not show up on the terminal even as you type it however the terminal is registering it. After you are done typing it in press enter**)
@@ -42,41 +42,20 @@ Please type in 'y' and hit enter **)
 2. Copy the repository to your Documents folder.
 3. Open up a  terminal (Cntrl + Alt  + T)
 4. Type into terminal:
-		> sudo apt-get upgrade
-		> sudo apt-get update
-		> sudo apt-get install python3-pip
+```
+sudo apt-get upgrade
+sudo apt-get update
+sudo apt-get install python3-pip
+```
 5. Type into terminal:
-		> sudo apt-get install python3-pyqt5
-		> pip3 install numpy==1.15.0
-		> pip3 install opencv-python==3.3.0.9
-		> pip3 install paramiko==1.18.0
-		> pip3 install matplotlib==2.0.2
-		> pip3 install typing
-		> pip3 install pygo
-		> pip3 install pygi
-		> sudo apt-get install git
-		> sudo apt-get install emacs
-		> cd
-6. Now we must install python3.4 without messing up any of the other python distros (See full instructions here https://www.tutorialspoint.com/how-to-install-python-3-4-4-on-ubuntu)
-	-Type into your terminal
-	"""
-	> sudo apt-get install build-essential checkinstall
-	"""
-	-Type 'y' when prompted
-	"""
-	> sudo apt-get install libgdbm-dev tk-dev libncursesw5-dev libssl-dev libsqlite3-dev libreadline-gplv2-dev libc6-dev libbz2-dev
-	> cd /usr/src
-	> sudo wget https://www.python.org/ftp/python/3.4.4/Python-3.4.4.tgz
-	> sudo tar xzf Python-3.4.4.tgz
-	> cd Python-3.4.4
-	> sudo ./configure
-	> sudo make altinstall
-	> cd
-	"""
-	Now when you type in 'sudo python3.4 -V' into the terminal you shoud see:
-	"
-	Python 3.4.4
-	"
+
+```
+sudo apt-get install python3-pyqt5 && \
+pip3 install numpy opencv-python paramiko typing matplotlib pygo pygi requests && \
+sudo apt install net-tools
+```
+
+
 7. Then type in the following and install gstreamer1.0
 		> sudo apt-get install -f gstreamer1.0
 		> sudo apt-get install -f gstreamer1.0-tools
@@ -87,14 +66,11 @@ Please type in 'y' and hit enter **)
 
 8. Now we will install the MP4Box application and dependencies that are requried following directions found on https://gpac.wp.imt.fr/tag/mp4box/
    (***Update as of 7/17/2020 due to recent update by gpac MP4Box doesn't work please find the attached gpac in the file you downloaded or download an older version****)
-	-Open a terminal and type
+   Install from here https://gpac.wp.imt.fr/downloads/ 
+	-Open a terminal and navigate to the debian file you installed 
 		"""
-		> git clone https://github.com/gpac/gpac.git
-		> cd gpac
-		> ./configure --static-mp4box --use-zlib=no
-		> make -j4
-		> sudo make install
-		> cd
+
+		sudo apt install ./gpac_2.2.1-rev0-gb34e3851-release-2.2_amd64.deb  # Or whatever you have corresponding to the correct release
 		"""
 	-In order to check that you have installed MP4Box type in "which MP4Box" into the terminal and you should see
 		"""

@@ -186,6 +186,7 @@ class LaunchObject:
         """A dictionary mapping player objects to camera port."""
 
         # Reference to SCORHE controller
+
         self.controllerThread, _ = server.masterRunServer(argv)
         """The thread controlling the server.
         
@@ -1583,42 +1584,42 @@ class LaunchObject:
                 if bool(self.settings['camMap']['name'][i].values()):
                     self.settingsCages.update([(i, copy.deepcopy(self.settings))])
 
-    def startLauncher(self, argv: List[str]) -> None:
-        """Function starts server and links to the front end logic."""
-        self.openSettingsJson()
-        self.openSettingsCagesJson()
+    # def startLauncher(self, argv: List[str]) -> None:
+    #     """Function starts server and links to the front end logic."""
+    #     self.openSettingsJson()
+    #     self.openSettingsCagesJson()
 
-        # Sets up SCORHE server
-        self.controllerThread, _ = server.masterRunServer(argv)
-        """:type: SCORHE_server.CameraServerController"""
-
-
-        # Give server GUI determined settings for synchronous cameras
-        self.setSettings()
-
-        # Give server GUI determined settings for Asynchronous cameras 
-        # however setSettingsCages will only be implemented to create the settingsCages map as
-        # self.loadAsynchSettings is False at this point.
-
-        self.setSettingsCages()
+    #     # Sets up SCORHE server
+    #     self.controllerThread, _ = server.masterRunServer(argv)
+    #     """:type: SCORHE_server.CameraServerController"""
 
 
-        self.window.setSelectionType(self.settings['grouptype'])
-        # Sets up buttons
-        self.setUpGUIButtons()
-        time.sleep(0.1)
-        # clientInfo dictionary
-        # Declares an instance of the GUI information updater
+    #     # Give server GUI determined settings for synchronous cameras
+    #     self.setSettings()
 
-        self.updater = updater.Updater(self.camUpdate, self.text,
-                                       self.controllerThread,
-                                       self.camPorts)
-        # Starts the updater
-        self.updater.update()
-        # Sets up side info panel
-        self.setUpInfoPanel()
-        self.camUpdate()
-        self.cageUpdate()
+    #     # Give server GUI determined settings for Asynchronous cameras 
+    #     # however setSettingsCages will only be implemented to create the settingsCages map as
+    #     # self.loadAsynchSettings is False at this point.
+
+    #     self.setSettingsCages()
+
+
+    #     self.window.setSelectionType(self.settings['grouptype'])
+    #     # Sets up buttons
+    #     self.setUpGUIButtons()
+    #     time.sleep(0.1)
+    #     # clientInfo dictionary
+    #     # Declares an instance of the GUI information updater
+
+    #     self.updater = updater.Updater(self.camUpdate, self.text,
+    #                                    self.controllerThread,
+    #                                    self.camPorts)
+    #     # Starts the updater
+    #     self.updater.update()
+    #     # Sets up side info panel
+    #     self.setUpInfoPanel()
+    #     self.camUpdate()
+    #     self.cageUpdate()
 
     def deleteTempFiles(self, filename: str) -> None:
         pass
