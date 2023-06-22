@@ -29,24 +29,24 @@ utilities.
 
 
 # HARDWARE NEEDED  
-- 4 Raspberry Pi 3B (RPi)  (You can also utilize RPi 4B however different instructions may apply for display and microSD card requirments)
-- 4 NoIR Camera V2
+- Raspberry Pi 3B (RPi)
+- Raspberry Pi Cameras
+(Can be from only the follwoing type:
+RPi Camera V2 or V2 NoIR, or Raspberry Pi High Quality Camera)
 - Computer with Ethernet capabilities
-- 1 Linksys LRT224 router and more gigabit Routers if need be (at least 7 open ethernet ports, one for each RPi, one for Host PC, and 2 as intermediaries between the two routers)
-- Micro USB power cables (A-Male to Micro-B), with a current supply of at least 2 A (Amps) (possibly more for hooking up NoIR Cameras) or at least 3.5 Amps if using RPi 4B
-- 7 Cat 6 Ethernet cables (depending one whether or not you have 1 or 2 Gigabit routers)
+- 1 [Linksys LRT224](https://www.linksys.com/lrt214-business-gigabit-vpn-router/LRT214.html) router and more Ethernet switches if need be (one ethernet for each RPi, and extra ports for Host PC, and 2 as intermediaries between the two routers) 
+
+- Micro USB power cables (A-Male to Micro-B), with a current supply of at least 2 A (Amps) (possibly more for hooking up cameras) or at least 3.5 Amps if using RPi 4B
+
+- \>1 Ethernet cable for each RPi and one more for the Host PC
 - USB keyboard and mouse (to connect to a RPi, via USB ports)
 - HDMI Cable (to connect RPi to display)
 - Display with HDMI capabilities (Or remote in to Raspberry pi's via SSH)
-- 4 microSD cards that are at least 16GB in size however I recommend 32GB as it is not signifficantly more expensive (about a $1 to $2 difference as of 2020) 
-     and will work better with later versions of RPi's (such as RPi 4B)
-- An microSD card to SD card adapter
--If your PC doesn't have an SD card port then please get a usb adapter that can both READ and WRITE to and from the microSD card.
+- 4 microSD cards that are at least 8GB in size however I recommend 32GB as it is not signifficantly more expensive (about a $1 to $2 difference as of 2020) 
+and will work better with later versions of RPi's (such as RPi 4B)
+- A microSD card to USB adapter (if your PC does not have a microSD card port)
 - FLASH DRIVE ( >32GB can cause problems if not formatted in FAT32 but as long as it is formatted with FAT32 and not exFAT or other format you should be fine)
-- A seperate keyboard and mouse with USB plugs and connect to RPi
-
-
-
+- A seperate keyboard and mouse with USB plugs and connect to RPi (or SSH/VNC into RPi)
 
 # SETTING UP SOFTWARE needed on PC with Ubuntu 18.04/20.04
 (**Note whenever the terminal prompts you with:
@@ -58,16 +58,25 @@ Type in your password to the computer, the password will not show up on the term
     Do you want to continue? [Y/n]
 Please type in 'y' and hit enter **)
 
+## Automatic Script Installation
 As of 06-22-2023 there is a script called install_SCORHE.sh and it will install all the necessary software for you. Just run
 ```
 sudo chmod +x install_SCORHE.sh && ./install_SCORHE.sh
 ```
+and it will install all the necessary software for you.
 
-1. Clone this repository to your computer, or download a zip to your computer and unzip it.
-2. Copy the repository to your Downloads folder.
+(**Note** that this script will perform updates and upgrades on your computer)
 
-3. Open up a  terminal (Cntrl + Alt  + T)
+## Manual Installation
+1. Clone this https://github.com/NIH-CIT-OIR-SPIS/VideoAPA_DVR_Synch  repository to your computer, or download a compressed file of the code (Go to Code -> Download ZIP) to your computer and extract it.
 
+```
+git clone https://github.com/NIH-CIT-OIR-SPIS/VideoAPA_DVR_Synch.git
+```
+
+2. Copy the VideoAPA_DVR_Synch to your Downloads folder.
+
+3. Open up a terminal (CTRL + ALT + T)
 
 Make sure you have python3 installed on your computer by typing in the following into the terminal:
 
@@ -107,6 +116,7 @@ sudo apt-get install libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-pl
 ```
 wget https://download.tsi.telecom-paristech.fr/gpac/release/2.2.1/gpac_2.2.1-rev0-gb34e3851-release-2.2_amd64.deb
 ```
+
 Once you have downloaded the file type in the following:	
 ```
 sudo apt install ./gpac_2.2.1-rev0-gb34e3851-release-2.2_amd64.deb  # Or whatever you have corresponding to the correct release
@@ -140,10 +150,38 @@ From now on to run the program do in the acquisition folder:
 ```
 
 
-# SETTING UP THE RASPBERRY PI's  (**NOTE** if you are integrating a depth camera please go to instructions called "SETTING UP THE RPi4 with Ubuntu 18.04")
-	(Steps 8-12 can be done on a Windows computer and if you wish to see those instructions please refer to README.md)
-	1. Go to (https://www.raspberrypi.org/downloads/) on your PC and click on the Raspberry Pi Imager for Ubuntu and download.
-	2. If you have a previous version of RPi os on the microSD card do the following, Otherwise continue
+# SETTING UP THE RASPBERRY PI's  
+
+It is highly recommended to use the Attached Raspberry Pi 3B image (found in Releases) as it has all the necessary software installed and configured.
+
+
+
+## Using Pre-made Raspberry Pi Image (Recommended)
+For this part you will need:
+A computer with Windows or Ubuntu
+A microSD to USB adapter or a computer with a microSD card reader
+A microSD card that is >8GB in size.
+
+Go to the releases page and download the latest image (currently 1.0.1) 
+
+Or click on this link to download the image directly: 
+[Raspberry Pi 3B Image](https://github.com/NIH-CIT-OIR-SPIS/VideoAPA_DVR_Synch/releases/download/v1.0.1/rpi3-img-6-21-23.img.gz )
+
+You can use [7zip](https://www.7-zip.org/) to unzip the file (if on windows) or just extract it on Ubuntu by left clicking on the file and hitting 'Extract here'.
+
+Please use [belenaEtcher](https://www.balena.io/etcher/) to write the image to the microSD card.
+
+
+
+If you wish to setup the Raspberry Pi software manually please follow the instructions below.
+
+## Manual Installation
+(**NOTE** if you are integrating a depth camera please go to instructions called 
+"SETTING UP THE RPi4 with Ubuntu 18.04")
+	
+(Steps 8-12 can be done on a Windows computer and if you wish to see those instructions please refer to README.md)
+1. Go to (https://www.raspberrypi.org/downloads/) on your PC and click on the Raspberry Pi Imager for Ubuntu and download. (You must download the Buster image 32-bit (not anything newer))
+2. If you have a previous version of RPi os on the microSD card do the following, Otherwise continue
 		- Insert your microSD card into your computer and type in the computer application search bar 'Disks' and open the application that shows up
 		- Scroll to your specified microSD card and click on the gear symbol on your specified microSD card
 		- Click on the option "Format Partition".
@@ -158,6 +196,8 @@ From now on to run the program do in the acquisition folder:
 	5. After done downloading insert you microSD card into your RPi.
 
 #	Setting up Software of RPi 
+
+
 	6. Choose your countries settings for time and keyboard layout.
 	7. Skip setup of password and user name
 	8. Connect to a wifi network
@@ -168,9 +208,9 @@ From now on to run the program do in the acquisition folder:
 	12. Now we will open the terminal (Crtl + Alt + T)
 	13. In the terminal type in:
 			'''
-			> sudo apt-get install -f gstreamer1.0
-			> sudo apt-get install -f gstreamer1.0-tools
-			> sudo apt-get install python3-pyqt5
+			sudo apt-get install -f gstreamer1.0
+			sudo apt-get install -f gstreamer1.0-tools
+			sudo apt-get install python3-pyqt5
 			'''
 			-(*Note) whenever you are prompted with the "Do you wish to continue [Y/N]" just type in 'y' and hit 'Enter'
 	14. Now in the terminal type in:
@@ -241,8 +281,6 @@ From now on to run the program do in the acquisition folder:
 25. More information about creating image copies can be found here (https://raspi.tv/2012/how-to-make-a-raspberry-pi-disk-image-to-sd-card-with-win32diskimager)
 26. Create copies of the current microSD and place them on the other 3 microSD cards 
 
-**Further Instructions for Depth Camera
-
 
 # SETTING UP THE SYSTEM
 Now that you have all four RPi's setup with the software, as well as the PC set up we can hook up the ethernet cables.
@@ -254,49 +292,18 @@ Now that you have all four RPi's setup with the software, as well as the PC set 
 *Note: The RPi 3B's need at least 2 Amps of current each to operate, however 3 Amps is preferred if possible. (The RPi 4B however require a minimum of 3.5 Amps to operate normally)
 	5. Make sure the NoIR cameras are inserted properly. The blue tab should be facing towards the Ethernet port on the RPis
 
-***SETTING UP THE RPi4 with Ubuntu 18.04***
-	Please note that these instructions pertain to installing an Ubuntu 18.04 image on an RPi4. You must have access to an ethernet port for internet
-	1. Download the RPi imager from https://www.raspberrypi.org/downloads/ 
-	2. Go to https://ubuntu.com/download/raspberry-pi and download the 64bit version of Ubuntu 18.04 for the RPi4
-	3. When promtpted allow the program to automatically open in RPi imager and write to the specified microSD card
-	4. After done writing insert microSD into RPi4 and connect ethernet cable to RPi4
-	5. Turn on RPi4 and you will be greeted with a screen that will ask you for an ubuntu user name and password. Type in: "ubuntu" for both (without quotation marks).
-	6. Now you will be prompted to create a new username and password. Type in ubuntu for the username and a chosen password.
-	7. Then type:
-		> sudo apt-get update
-		> sudo apt-get upgrade
-	 (**If you run into trouble with either one of these processes (ie a lock error) try rebooting or powering off the RPi4. Do not power off the RPi4 if you are fetching reading or downloading something)
-	8. Once you have updated the software please type in:
-		> sudo apt install ubuntu-desktop
-	9. If prompted choose the default selection.
-	10. Then once you see the command terminal prompt "ubuntu@ubuntu: " you can reboot your pi using sudo reboot
-	11. Once you have connected and logined to the desktop please connect to wifi.
-	12. Then open the terminal with (Cntrl + Alt + T) and type:
-		> sudo nano /etc/netplan/50-cloud-init.yaml
-	13. Edit the text to include the following: 
-		
-		network:
-			renderer: NetworkManager
-			ethernets:
-				eth0:
-					dhcp4: true
-					optional: true
-		version: 2
-	14. Save the edits by pressing (Cntrl + X) and then typing: Y when prompted.
-	15. Now type into the terminal:
-		> sudo netplan apply
-	16. You should now see an ethernet connection, and at this point unless you don't have wifi you can unplug the ethernet cable from the RPi4
-	
 
 # RUNNING THE SYSTEM on Linux
-		1. Open a terminal (Cntrl + Alt + T)
-		2. In the terminal type
-			"""
-			>cd Downloads/<INSERT the containing directory for VideoAPA_For_Host_PC>/VideoAPA_For_Host_PC/acquisition/
-			>chmod +x linux_vr_run.sh
-			>./linux_vr_run.sh
-			"""
-		3. Any Experiment Data and Settings data made in the SCORHE application will be found in the folder in Downloads labeled SCORHE
+1. Open a terminal (Cntrl + Alt + T)
+2. In the terminal type
+```
+cd ~/Downloads/VideoAPA_DVR_Synch/acquisition/
+```
+If this is your first time running the program then type in the following:
+```
+chmod +x linux_vr_run.sh && ./linux_vr_run.sh
+```
+3. Any Experiment Data and Settings data made in the SCORHE application will be found in the folder in Downloads labeled SCORHE
 #***************IMPORTANT NOTE: Operation Features with visuals can be found on the document attached "SCORHE Video Acquisition User Guide"*************
 	
 
