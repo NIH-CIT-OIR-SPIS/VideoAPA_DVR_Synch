@@ -47,83 +47,114 @@ utilities.
 
 
 
-# SETTING UP SOFTWARE needed on PC (Computer with Ethernet Capabilites)
+
+# SETTING UP SOFTWARE needed on PC with Ubuntu 18.04 Linux (Computer with Ethernet Capabilites) and Ubuntu 20.04
+(**Note whenever the terminal prompts you with:
+	[sudo] password for <YOUR USERNAME>:
+Type in your password to the computer, the password will not show up on the terminal even as you type it however the terminal is registering it. After you are done typing it in press enter**)
+
+(** During this part you may get prompts such as
+    Do you want to continue? [Y/n]
+Please type in 'y' and hit enter **)
+
 
 1. Go to /***REPLACE WITH REPOSITORY WEB LOCATION ***/ and download .zip
-2. Copy the repository to your downloads folder if on Windows. If on Linux copy to your Documents folder.
-3. Open up a windows terminal by typing in 'cmd' into the bottom left search bar and clicking on the black screen
-4. Go to  https://www.python.org/downloads/release/python-344/ to install python 3.4.4, scroll to bottom and click on Windows x86-64 bit installer and save to your downloads
-	-Click on application and follow directions, remember to set path, Save in C:\Users\Python34\ new directory 
-5. Download the following packages save each of them into C:\Users\Python34
-	- [pygi 3.24.1](https://sourceforge.net/projects/pygobjectwin32/files/?source=navbar)
-	- [PyQt5 5.4.1](https://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-5.4.1/)  install the installer .64 exe version 
+2. Copy the repository to your Documents folder.
+3. Open up a  terminal (Cntrl + Alt  + T)
+4. Type into terminal:
+```
+sudo apt-get upgrade
+sudo apt-get update
+sudo apt-get install python3-pip
+```
+5. Type into terminal:
 
-6. Follow advice given on https://developercommunity.visualstudio.com/content/problem/589489/i-need-the-2010-build-tools-for-visual-studio.html
-	-Download Microsoft Visual Studios 10.0
-	" If you want an older version, please go to https://visualstudio.microsoft.com/vs/older-downloads/, select a product and 
-	click on the download button to log in to your Visual Studio (MSDN) subscription or join the free Dev Essentials program (https://visualstudio.microsoft.com/dev-essentials/), 
-	to gain access to the older versions. You can get all Visual Studio 2010 products from https://my.visualstudio.com/Downloads?q=visual%20studio%202010&wt.mc_id=o~msft~vscom~older-downloads "
-7. Type into the search bar next to the Windows icon on your PC 'cmd' and open the Command Prompt that shows up
-8. You should see something like the following:
-	C:\Users\[YOUR USERNAME]>
-9. Then type in: '''
- 	> pip install numpy==1.15.0
- 	> easy_install pip==8.0.1
-	> pip install opencv-python==3.3.0.9
-	> pip install setuptools==18.2
-	> pip install requests==2.23.0
-	> pip install pytz==2020.1
-	> pip install yaml==5.3.1
-	> pip install urllib3==1.25.9
-	> "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" && pip install crypto==1.4.1 
-	> pip install paramiko==1.18.0
-	> pip install matplotlib==2.0.2
-	> pip install typing
-	> pip install PyQt5 
-	'''
-10. If you can't find vcvarsall.bat search for it in file explorer where Microsoft Visual Studio 10.0 was downloaded
-11. Now reopen 'Command Prompt' and type in cd C:\Users\[YOUR USERNAME]\Downloads\Repository_For_Video_APA-6-23-2020\VideoAPA_For_Host_PC\acquisition	
-12. Now type in runacquistion.bat (or you can just click on runacquisition.bat
-13. The program should now run and you should see 4 black screens and a window open. Now close that window
+```
+sudo apt-get install python3-pyqt5 && \
+pip3 install numpy opencv-python paramiko typing matplotlib pygo pygi requests && \
+sudo apt install net-tools
+```
 
-**IMPORTANT NOTE ABOUT STORAGE: OCCASIONALLY THE PC might get full of unwanted temporary files which are not deleted and 
-**can cause storage issues in order to stop this go C:\Users\<your username>\AppData\Local\Temp. Sort by size and you will find many files starting with gpac_... then delete the TMP files which are greater than 0KB
-# SETTING UP THE RASPBERRY PI's 
 
-	14. Go to (https://www.raspberrypi.org/downloads/) on your PC and click on the Raspberry Pi Imager for Windows and download.
-	15. If you have a previous version of RPi os on the microSD card do the following, Otherwise continue
-		- Insert your microSD card into your computer and type in the windows search bar 'Create and Format hard disk partitions' and click on the app that pops up
-		- Scroll to your specified microSD card and left click to delete all volumes on the disk until it is unallocated.
-		-Left click on the unallocated disk and create a new simple volume and follow the instructions.
-		-Continue on to next step.
-	16. Insert you microSD card into your computer, and open the RPi imager for windows. 
-	17. Pick Raspberry Pi OS 32 bit and choose your SD card and write.
-	18. After done downloading insert you microSD card into your RPi.
+7. Then type in the following and install gstreamer1.0
+		> sudo apt-get install -f gstreamer1.0
+		> sudo apt-get install -f gstreamer1.0-tools
+	(The above may not always work so you may have to type in the gstreamer manually as seen in the following command line direction. In fact I recommend doing the following anyways just in case)
+		> sudo apt-get install libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+	
 
-#	Setting up Software of RPi
-	19. Choose your countries settings for time and keyboard layout.
-	20. Skip setup of password and user name
-	21. Connect to a wifi network
-	22. Update software as neccessary.
-	23. After update and install reboot RPi.
-	24. Now click on RPi symbol on top left and from the drop down menu click on Preferences->Raspberry Pi Configuration
+
+8. Now we will install the MP4Box application and dependencies that are requried following directions found on https://gpac.wp.imt.fr/tag/mp4box/
+   (***Update as of 7/17/2020 due to recent update by gpac MP4Box doesn't work please find the attached gpac in the file you downloaded or download an older version****)
+   Install from here https://gpac.wp.imt.fr/downloads/ 
+	-Open a terminal and navigate to the debian file you installed 
+		"""
+
+		sudo apt install ./gpac_2.2.1-rev0-gb34e3851-release-2.2_amd64.deb  # Or whatever you have corresponding to the correct release
+		"""
+	-In order to check that you have installed MP4Box type in "which MP4Box" into the terminal and you should see
+		"""
+		/usr/local/bin/MP4Box
+		"""
+9.  Then in your terminal typeff
+		"""
+		> cd Downloads/<INSERT the containing directory for VideoAPA_For_Host_PC>/VideoAPA_For_Host_PC/acquisition/
+		> chmod +x linux_vr_run.sh
+		> ./linux_vr_run.sh
+		"""
+10. The program should now run and you should see 4 black screens and a window open. Now close that window
+11. (*NOTE at times you may get an error in server.py get_ip_address  this is due to the fact that your ethernet identifier may have been changed during your installation of ubuntu. You can check by going to command line and typing in
+		> sudo apt-get install net-tools
+	Type in:
+		> ifconfig -a
+	If you don't see anything called eth0 Follow further directions from the second answer at https://askubuntu.com/questions/767786/changing-network-interfaces-name-ubuntu-16-04
+		> sudo nano /etc/default/grub
+	Change to GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"
+		>sudo update-grub
+	Reboot the computer
+
+
+# SETTING UP THE RASPBERRY PI's  (**NOTE** if you are integrating a depth camera please go to instructions called "SETTING UP THE RPi4 with Ubuntu 18.04")
+	(Steps 8-12 can be done on a Windows computer and if you wish to see those instructions please refer to README.md)
+	1. Go to (https://www.raspberrypi.org/downloads/) on your PC and click on the Raspberry Pi Imager for Ubuntu and download.
+	2. If you have a previous version of RPi os on the microSD card do the following, Otherwise continue
+		- Insert your microSD card into your computer and type in the computer application search bar 'Disks' and open the application that shows up
+		- Scroll to your specified microSD card and click on the gear symbol on your specified microSD card
+		- Click on the option "Format Partition".
+				-Name the volume rpiBoot
+				-Make sure the "Erase" Switch is gray not green
+				-Under "Type" select the circle "For use with all systems and devices (FAT)" and click next
+		-Then after the formating has finished go to the gear symbol again and this time select "Edit Partition"
+		-From the type menu choose the option "Linux" and de-select Bootable
+		-Click change
+	3. Insert you microSD card into your computer, and open the RPi imager for Ubuntu. 
+	4. Pick  Raspberry pi OS 32 bit and choose your SD card and write.
+	5. After done downloading insert you microSD card into your RPi.
+
+#	Setting up Software of RPi 
+	6. Choose your countries settings for time and keyboard layout.
+	7. Skip setup of password and user name
+	8. Connect to a wifi network
+	9. Update software as neccessary.
+	10. After update and install reboot RPi.
+	11. Now click on RPi symbol on top left and from the drop down menu click on Preferences->Raspberry Pi Configuration
 		In the window that pops up go to Interfaces and Enable both Camera and SSH and reboot
-	25. Now we will open the terminal (Crtl + Alt + T)
-	26. In the terminal type in:
+	12. Now we will open the terminal (Crtl + Alt + T)
+	13. In the terminal type in:
 			'''
 			> sudo apt-get install -f gstreamer1.0
 			> sudo apt-get install -f gstreamer1.0-tools
 			> sudo apt-get install python3-pyqt5
 			'''
 			-(*Note) whenever you are prompted with the "Do you wish to continue [Y/N]" just type in 'y' and hit 'Enter'
-	27. Now in the terminal type in:
+	14. Now in the terminal type in:
 			'''
 			> sudo apt install python3.4
 			'''
 			(again hit 'y' if prompted with the "Do you wish to continue [Y/N]")
-	28. Disable the wifi by clicking on the wifi symbol in the top right corner of the screen and clicking 'Turn off wifi'
-	29. Turn off bluetooth in the same way
-	30. Now in the terminal type in:
+	15. Disable the wifi by clicking on the wifi symbol in the top right corner of the screen and clicking 'Turn off wifi'
+	16. Turn off bluetooth in the same way
+	17. Now in the terminal type in:
 			'''
 			> crontab -e
 			'''
@@ -135,14 +166,14 @@ utilities.
 			'''
 		(to exit hit Cntrl + X then 'y' then 'enter')
 
-	31. Now in the terminal type in:
+	18. Now in the terminal type in:
 			'''
 			> sudo nano /etc/lightdm/lightdm.conf
 			'''
 			Scroll using the arrows until you find the text '[Seat:*]'
 			Underneath this text type in 'xserver-command=X -s 0 dpms'
 			Then exit (Cntrl + X then 'y' then 'enter')
-	32. Now in the terminal type in:
+	19. Now in the terminal type in:
 			'''
 			> sudo nano /boot/config.txt
 			
@@ -158,18 +189,17 @@ utilities.
 			Save and exit
 			(*note that this will make it so that automatically the pi cannot be connected to wifi at all or bluetooth, and the only way to reconnect them
 			would be to delete the two lines written above in /boot/config.txt , the gpu_mem allows for more operation of RAM by gpu)
-	33. Right click on the desktop menu bar and click on "panel settings"
-	34. Click "Advanced" and check "Minimize panel when not in use". 
+	21. Click "Advanced" and check "Minimize panel when not in use". 
 
 			
-	35. Two Options in this section either:
+	22. Two Options in this section either:
 	a) Flash Drive Method (Easier method but flash drive must be formatted
-		-Go back to your PC and insert your (8GB/16GB/32GB) flash drive. From this directory go to 'Place in RPi' or the clients/source folder to copy the folder and copy all files in that directory and place them on your flash drive.
+		-Go back to your PC and insert your (8GB/16GB/32GB) flash drive. From this directory go to 'Place in RPi' and copy all files in that directory and place them on your flash drive.
 		-Insert your flash drive into your RPi
 		-A window should pop up on your RPi hit 'OK'
 		-Then go to your terminal and type in:
 				'''
-				> cp -r /media/pi/[YOUR DRIVE NAME]/scripts /home/pi/
+				> cp -r /media/pi/<YOUR DRIVE NAME>/scripts /home/pi/
 				'''
 				Then type in:
 				'''
@@ -177,58 +207,81 @@ utilities.
 				'''
 				And you should see "scripts" listed as one of the new folders in the pi directory
 		-Remove your flash drive (Eject can be found by going to the new symbol that popped up on the top right panel and clicking it and then clicking on your drive)
-	b) File Tranfer Method (no flash drive needed)
+	b) File Transfer Method (no flash drive needed)
 		-Add the provided "scripts" folder to the "/home/pi" directory using a file transfer client such as WinSCP or FileZilla using an SFTP connection. 
 		 More information on this can be read at: https://www.raspberrypi.org/documentation/remote-access/ssh/sftp.md
-36. Now turn off RPi take out the microSD.
-37. You can make copies of the image you created (Assuming all microSD cards are the same size or greater) utilizing Win32 application (https://sourceforge.net/projects/win32diskimager/) 
-38. More information about creating image copies can be found here (https://raspi.tv/2012/how-to-make-a-raspberry-pi-disk-image-to-sd-card-with-win32diskimager)
-39. Create copies of the current microSD and place them on the other 3 microSD cards 
+23. Now turn off RPi take out the microSD.
+24. You can make copies of the image you created (Assuming all microSD cards are the same size or greater) utilizing Win32 application (https://sourceforge.net/projects/win32diskimager/) 
+25. More information about creating image copies can be found here (https://raspi.tv/2012/how-to-make-a-raspberry-pi-disk-image-to-sd-card-with-win32diskimager)
+26. Create copies of the current microSD and place them on the other 3 microSD cards 
 
-
+**Further Instructions for Depth Camera
 
 
 # SETTING UP THE SYSTEM
 Now that you have all four RPi's setup with the software, as well as the PC set up we can hook up the ethernet cables.
-	40. Turn off wifi on the host PC
-	41. The only ports that you should be using on the gigabit routers are ones that have numbers next to them and are not WAN or LINK ports
-	42. Have the PC hook up to 1 on the Linksys 224 gigabit router. Then hook up RPi's 1, 2, 3 and 4 repectively if you have enough ports on your gigabit router
-	43. If you only have 2 gigabit routers hook an ethernet cable as an intermediate between both routers and plug in the rest of the ethernet cables with the RPis
-	44. Make sure you only have one ethernet connection connected directly to the computer (if you have multiple ethernet connections on the computer make sure they are clear)
-	45. Make sure the ethernet connection is 'Private' in order to change it go to Settings > Ethernet > [The connected network] > Network Profile and make sure 'Private' is selected. 
-	46. If you still don't get a connection go to Settings > Ethernet > Network Profile and under Related Settings select 'Change Adapter Options'. Then select the ethernet connection port which you are connected to and left click to select 'Diagnose'. If it sees any errors apply fix and shutdown the computer then turn it back on. Then see if you can change it to Private.
-	47. If you still can't get set the ethernet to 'Private' you will need to search for 'Windows Powershell' and run as administrator. Then type into the command line
-		'''
-		Get-NetConnectionProfile
-		'''
-	    Then make note of the 'Interfaceindex' number then type in:
-	    	'''
-	    
-	   	Set-NetConnectionProfile -InterfaceIndex <REPLACE_WITH_INDEX_NUM> -NetworkCategory Private
-		'''
+	1. Turn off wifi on the host PC
+	2. The only ports that you should be using on the gigabit routers are ones that have numbers next to them and are not WAN or LINK ports
+	3. Have the PC hook up to 1 on the gigabit router. Then hook up RPi's 1, 2, 3 and 4 repectively if you have enough ports on your gigabit router
+	4. If you only have 2 gigabit routers hook an ethernet cable as an intermediate between both routers and plug in the rest of the ethernet cables with the RPis
+
+*Note: The RPi 3B's need at least 2 Amps of current each to operate, however 3 Amps is preferred if possible. (The RPi 4B however require a minimum of 3.5 Amps to operate normally)
+	5. Make sure the NoIR cameras are inserted properly. The blue tab should be facing towards the Ethernet port on the RPis
+
+***SETTING UP THE RPi4 with Ubuntu 18.04***
+	Please note that these instructions pertain to installing an Ubuntu 18.04 image on an RPi4. You must have access to an ethernet port for internet
+	1. Download the RPi imager from https://www.raspberrypi.org/downloads/ 
+	2. Go to https://ubuntu.com/download/raspberry-pi and download the 64bit version of Ubuntu 18.04 for the RPi4
+	3. When promtpted allow the program to automatically open in RPi imager and write to the specified microSD card
+	4. After done writing insert microSD into RPi4 and connect ethernet cable to RPi4
+	5. Turn on RPi4 and you will be greeted with a screen that will ask you for an ubuntu user name and password. Type in: "ubuntu" for both (without quotation marks).
+	6. Now you will be prompted to create a new username and password. Type in ubuntu for the username and a chosen password.
+	7. Then type:
+		> sudo apt-get update
+		> sudo apt-get upgrade
+	 (**If you run into trouble with either one of these processes (ie a lock error) try rebooting or powering off the RPi4. Do not power off the RPi4 if you are fetching reading or downloading something)
+	8. Once you have updated the software please type in:
+		> sudo apt install ubuntu-desktop
+	9. If prompted choose the default selection.
+	10. Then once you see the command terminal prompt "ubuntu@ubuntu: " you can reboot your pi using sudo reboot
+	11. Once you have connected and logined to the desktop please connect to wifi.
+	12. Then open the terminal with (Cntrl + Alt + T) and type:
+		> sudo nano /etc/netplan/50-cloud-init.yaml
+	13. Edit the text to include the following: 
+		
+		network:
+			renderer: NetworkManager
+			ethernets:
+				eth0:
+					dhcp4: true
+					optional: true
+		version: 2
+	14. Save the edits by pressing (Cntrl + X) and then typing: Y when prompted.
+	15. Now type into the terminal:
+		> sudo netplan apply
+	16. You should now see an ethernet connection, and at this point unless you don't have wifi you can unplug the ethernet cable from the RPi4
 	
-*Note: The RPi 3B's need at least 2 Amps of current each to operate, however 3 Amps is preferred if possible. (The RPi 4B however require a minimum of 3.5 Amps)*
-	48. Make sure the NoIR cameras are inserted properly. The blue tab should be facing towards the Ethernet port on the RPis
-	49. As of right now the PC must be connected to the Linksys 224 gigabit router, mainly for security reasons. Any other connections to a raspberry pi or another gigabit router are connected through this router. If you wish to add more raspberry pi's to connect you can add another gigabit router and connect it to the linksys router and plug in new raspberry pi's via the new gigabit router.
 
-
-
-# RUNNING THE SYSTEM on Windows
-	45. Assuming everything is correct you should be able to just go to /VideoAPA_For_Host_PC/acquisition/ and double click on runacqisition.bat (you could also make a shortcut of runacqisition.bat by left clicking and then creating a shortcut to drag to the desktop.
-	46. If you wish you can also run via the command line by typing 'cmd' into the Windows search bar and click on the Command Prompt application that shows up.
-	47. Type in:
-		'''
-		> cd [DIRECTORY HOLDING FILES]\VideoAPA_For_Host_PC\acquisition\
-		> runacquistion.bat
-		'''
-	48. Make sure to go to Control Panel -> Network and Internet -> View network status and tasks -> Change adapter settings and make sure that you see nothing that shows a virtual machine connection, mainly for security reasons.
-	
-	If you do have one you will need to disable it
-
+# RUNNING THE SYSTEM on Linux
+		1. Open a terminal (Cntrl + Alt + T)
+		2. In the terminal type
+			"""
+			>cd Downloads/<INSERT the containing directory for VideoAPA_For_Host_PC>/VideoAPA_For_Host_PC/acquisition/
+			>chmod +x linux_vr_run.sh
+			>./linux_vr_run.sh
+			"""
+		3. Any Experiment Data and Settings data made in the SCORHE application will be found in the folder in Downloads labeled SCORHE
 #***************IMPORTANT NOTE: Operation Features with visuals can be found on the document attached "SCORHE Video Acquisition User Guide"*************
 	
 
 
 
+## Authors
+
+- Joshua "Tabs not spaces" Lehman
+- Simeon "Thread everything" Anfinrud
+- Ryan "C is better" Rinker
+- Yoni "I angered IT again" Pedersen
+- Noah Cubert
 
 ### https://scorhe.nih.gov
