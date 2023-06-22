@@ -1,4 +1,4 @@
-# SCORHE Video Acquisition For Synchronous Playback and Annotation for Windows 10 and Linux
+# SCORHE Video Acquisition For Synchronous Playback and Annotation for Linux
 
 Version is for people who wish to take simultaneous video from all cameras connected, 
 for Asynchronous only version please see: https://github.com/NIH-CIT-OIR-SPIS/Video_APA_DVR_Asynch
