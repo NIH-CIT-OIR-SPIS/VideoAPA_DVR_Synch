@@ -48,28 +48,46 @@ utilities.
 
 
 
-# SETTING UP SOFTWARE needed on PC with Ubuntu 18.04 Linux (Computer with Ethernet Capabilites) and Ubuntu 20.04
+# SETTING UP SOFTWARE needed on PC with Ubuntu 18.04/20.04
 (**Note whenever the terminal prompts you with:
 	[sudo] password for <YOUR USERNAME>:
+
 Type in your password to the computer, the password will not show up on the terminal even as you type it however the terminal is registering it. After you are done typing it in press enter**)
 
 (** During this part you may get prompts such as
     Do you want to continue? [Y/n]
 Please type in 'y' and hit enter **)
 
+As of 06-22-2023 there is a script called install_SCORHE.sh and it will install all the necessary software for you. Just run
+```
+sudo chmod +x install_SCORHE.sh && ./install_SCORHE.sh
+```
 
-1. Go to /***REPLACE WITH REPOSITORY WEB LOCATION ***/ and download .zip
-2. Copy the repository to your Documents folder.
+1. Clone this repository to your computer, or download a zip to your computer and unzip it.
+2. Copy the repository to your Downloads folder.
+
 3. Open up a  terminal (Cntrl + Alt  + T)
+
+
+Make sure you have python3 installed on your computer by typing in the following into the terminal:
+
+```
+python3 --version
+```
+
+If you do not have python3 installed (specifically python3.8) then type in the following into the terminal:
+```
+sudo apt-get install python3
+```
+
+
+(*** Note that this was tested with python 3.8.10 and it is recommended you use this version all other versions are untested as of yet. ***)
+
 4. Type into terminal:
 ```
-sudo apt-get upgrade
-sudo apt-get update
-sudo apt-get install python3-pip
-```
-5. Type into terminal:
-
-```
+sudo apt-get -y update && \
+sudo apt-get -y upgrade && \ 
+sudo apt-get install python3-pip && \
 sudo apt-get install python3-pyqt5 && \
 pip3 install numpy opencv-python paramiko typing matplotlib pygo pygi requests && \
 sudo apt install net-tools
@@ -77,41 +95,49 @@ sudo apt install net-tools
 
 
 7. Then type in the following and install gstreamer1.0
-		> sudo apt-get install -f gstreamer1.0
-		> sudo apt-get install -f gstreamer1.0-tools
-	(The above may not always work so you may have to type in the gstreamer manually as seen in the following command line direction. In fact I recommend doing the following anyways just in case)
-		> sudo apt-get install libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
-	
+```	
+sudo apt-get install libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+```	
 
 
 8. Now we will install the MP4Box application and dependencies that are requried following directions found on https://gpac.wp.imt.fr/tag/mp4box/
-   (***Update as of 7/17/2020 due to recent update by gpac MP4Box doesn't work please find the attached gpac in the file you downloaded or download an older version****)
-   Install from here https://gpac.wp.imt.fr/downloads/ 
-	-Open a terminal and navigate to the debian file you installed 
-		"""
 
-		sudo apt install ./gpac_2.2.1-rev0-gb34e3851-release-2.2_amd64.deb  # Or whatever you have corresponding to the correct release
-		"""
-	-In order to check that you have installed MP4Box type in "which MP4Box" into the terminal and you should see
-		"""
-		/usr/local/bin/MP4Box
-		"""
+
+(Try downloading directly from the site first, only use wget if you know the exact link to the file you want to download)
+```
+wget https://download.tsi.telecom-paristech.fr/gpac/release/2.2.1/gpac_2.2.1-rev0-gb34e3851-release-2.2_amd64.deb
+```
+Once you have downloaded the file type in the following:	
+```
+sudo apt install ./gpac_2.2.1-rev0-gb34e3851-release-2.2_amd64.deb  # Or whatever you have corresponding to the correct release
+```
+In order to check that you have installed MP4Box type in 
+```
+which MP4Box
+``` 
+and you should see
+```
+/usr/bin/MP4Box
+```
 9.  Then in your terminal typeff
-		"""
-		> cd Downloads/<INSERT the containing directory for VideoAPA_For_Host_PC>/VideoAPA_For_Host_PC/acquisition/
-		> chmod +x linux_vr_run.sh
-		> ./linux_vr_run.sh
-		"""
+```
+cd ~/Downloads/VideoAPA_DVR_Synch/acquisition/
+```
+If this is your first time running the program then type in the following:
+```
+chmod +x linux_vr_run.sh && ./linux_vr_run.sh
+```
+Otherwise type in the following:
+```
+./linux_vr_run.sh
+```
+
 10. The program should now run and you should see 4 black screens and a window open. Now close that window
-11. (*NOTE at times you may get an error in server.py get_ip_address  this is due to the fact that your ethernet identifier may have been changed during your installation of ubuntu. You can check by going to command line and typing in
-		> sudo apt-get install net-tools
-	Type in:
-		> ifconfig -a
-	If you don't see anything called eth0 Follow further directions from the second answer at https://askubuntu.com/questions/767786/changing-network-interfaces-name-ubuntu-16-04
-		> sudo nano /etc/default/grub
-	Change to GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"
-		>sudo update-grub
-	Reboot the computer
+
+From now on to run the program do in the acquisition folder:
+```
+./linux_vr_run.sh
+```
 
 
 # SETTING UP THE RASPBERRY PI's  (**NOTE** if you are integrating a depth camera please go to instructions called "SETTING UP THE RPi4 with Ubuntu 18.04")
