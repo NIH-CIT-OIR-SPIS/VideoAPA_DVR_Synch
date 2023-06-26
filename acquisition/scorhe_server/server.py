@@ -2196,19 +2196,22 @@ def get_ip_address(ifname: str='wlan0') -> Union[Dict[str, str], List[str]]:
     elif platform.system() == 'Linux':
         import subprocess
         data = defaultdict(list)
-        count = 0
+        ipv4_found = False
+        eth_line_found = False
         with subprocess.Popen(['ifconfig', '-a'], stdout = subprocess.PIPE) as sp:
             for line in sp.stdout.read().decode().splitlines():
                 line = line.lstrip().rstrip()
                 #print(line)
-                if line.startswith('inet'):
+                if eth_line_found and line.startswith('inet'):
                     logger.info("Setting to correct inet")
                     data['ipv4'].append(line.rsplit()[1])
                     data['mask'].append(line.rsplit()[3])
-                    count = 1
+                    ipv4_found = True
                     break
+                eth_line_found = bool(line and line.startswith("en"))
 
-        if count == 1:
+
+        if ipv4_found:
             path = "/etc/resolv.conf"
             with open(path) as fp:
                 all_line = fp.readline()
